@@ -1,0 +1,28 @@
+{% import 'macros/form.html' as form %}
+{{ field }}
+
+<br />
+<b>{{ field.label }}</b>
+{% for subfield in field.subfields %}
+  {% set type = "text" %}  
+  {% set name=field.field_name + '-' + subfield.field_name %}
+  {% set extra_html="" %}
+  {% set value=data.get(name, '') %}
+  {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
+  {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
+  {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %} 
+
+  {%- call form.input_block(
+    for='field-' + name,
+    label=h.scheming_language_text(subfield.label),
+    error=errors[name],
+    classes=['control-medium'],
+    control_classes=[],
+    extra_html="",
+    is_required=h.scheming_field_required(subfield)) -%}
+       <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
+        value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
+        {{ form.attributes(attrs) }} class="medinput"/>
+    {% endcall %}
+
+{% endfor %}
