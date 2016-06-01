@@ -82,6 +82,23 @@ Document any optional config settings here. For example::
     # (optional, default: 24).
     ckanext.composite.some_setting = some_default_value
 
+Add this to your schema.json file::
+ {
+      "field_name": "author",
+      "form_snippet": "composite.html",
+      "label": "Author Information",
+      "validators": "composite_group2json",
+      "subfields": [
+          {
+          "field_name": "name",
+          "label": "Name"
+          },
+          {
+          "field_name": "email",
+          "label": "Email"
+          }
+      ]
+    },
 
 ------------------------
 Development Installation
