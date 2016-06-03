@@ -1,10 +1,16 @@
 import json
 import re
 
-def _json2dict_or_empty(value):
+import logging
+
+
+logger = logging.getLogger(__name__)
+
+def _json2dict_or_empty(value, field_name = ""):
     try:
         json_dict = json.loads(value)
-    except:
+    except Exception as e:
+        logger.warn("Field " + field_name + "('" + str(value) + "') could not be parsed: " + str(e))
         json_dict = {}
     return (json_dict)
 
@@ -28,23 +34,23 @@ def composite_get_value_dict(field_name, data):
         value_dict = {}
 
         for field in fields:
-            if data[field]:
+            if data[field] is not None:
                 subfield = field.split("-",1)[1]
                 value_dict[subfield] = data[field]
         return value_dict
- 
-    group_value = {}
+
+    value_dict = {}
 
     form_value = build_value_dict()
-    
+
     if form_value:
-       group_value = form_value
+       value_dict = form_value
     else:
        db_value = data.get(field_name)
        if db_value:
            if isinstance(db_value, dict):
-               group_value = db_value
+               value_dict = db_value
            else:
-               group_value = _json2dict_or_empty(db_value)
+               value_dict = _json2dict_or_empty(db_value)
 
-    return group_value
+    return value_dict
