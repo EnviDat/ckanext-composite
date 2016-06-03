@@ -1,11 +1,6 @@
+{% set label_dict = h.composite_get_label_dict(field.subfields) %}
 {% set composite_dict = h.composite_get_as_dict(data[field.field_name]) %}
-<ol>
-    <li>
+
    {% for key in composite_dict%}
-        <b>{{ key }}: </b> {{ composite_dict[key] }},  
+        <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},  
    {%endfor%}
-   </li>
-</ol>
-{# {% for key, value in spatial_dict.iteritems() %} #}
-{#    {{ key }}: {{ value }} #} 
-{# {% endfor %} #}

@@ -15,10 +15,32 @@ def _json2dict_or_empty(value, field_name = ""):
     return (json_dict)
 
 def composite_get_as_dict(value):
+    '''
+    Template helper funciton.
+    Returns the value as a dictionary. If if is already
+    a dictionary, the original value is returned. If it is
+    a json dump, it will be parsed into a dictionary. Otherwise
+    an empty dictionary is returned.
+    '''
     if isinstance(value, dict):
         return value
     else:
         return(_json2dict_or_empty(value))
+
+def composite_get_label_dict(field_list):
+    '''
+    Converts a list of dictionaries containing the keys
+    "field_name" and "label" into asingle dictionary
+    with "field_name" value as key and "label" as value.
+    If label is not defined, the field name is used as
+    label. 
+    '''
+
+    label_dict = {}
+    for field in field_list:
+        name = field.get('field_name', '')
+        label_dict[name] = field.get('label', name)
+    return label_dict
 
 def composite_get_value_dict(field_name, data):
     '''
