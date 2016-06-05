@@ -6,10 +6,18 @@
     {
       "preset_name": "composite",
       "values": {
-        "form_snippet": "composite.html",
-        "display_snippet": "composite.html",
-        "validators": "composite_group2json"
-      }
+         "form_snippet": "composite.html",
+         "display_snippet": "composite.html",
+         "validators": "composite_group2json"
+       }
+    },
+    {
+      "preset_name": "composite_repeating",
+      "values": {
+         "form_snippet": "composite_repeating.html",
+         "display_snippet": "composite_repeating.html",
+         "validators": "composite_repeating_group2json"
+       }
     }
   ]
 }
