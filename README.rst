@@ -55,6 +55,8 @@ Installation
 
 To install ckanext-composite:
 
+0. Install the ckan extensions ckanext-scheming and ckanext-composite
+
 1. Activate your CKAN virtual environment, for example::
 
      . /usr/lib/ckan/default/bin/activate
@@ -76,31 +78,55 @@ To install ckanext-composite:
 Config Settings
 ---------------
 
-Document any optional config settings here. For example::
+Additional config settings::
 
-    # The minimum number of hours to wait before re-checking a resource
-    # (optional, default: 24).
-    ckanext.composite.some_setting = some_default_value
+     scheming.presets = ckanext.scheming:presets.json
+                        ckanext.repeating:presets.json
+                        ckanext.composite:presets.json
 
 Add this to your schema.json file::
 
-   {
-    "field_name": "author",
-      "form_snippet": "composite.html",
-      "label": "Author Information",
-      "validators": "composite_group2json",
-      "subfields": [
+     # Composite Field
+     {
+      "field_name": "maintainer",
+      "label": "Maintainer",
+      "preset": "composite",
+      "subfields":[
           {
-          "field_name": "name",
-          "label": "Name"
+            "field_name": "name",
+            "label": "Name",
+            "form_placeholder": "Joe Bloggs",
+            "display_property": "dc:contributor"
           },
           {
-          "field_name": "email",
-          "label": "Email"
+            "field_name": "email",
+            "label": "Email",
+            "form_placeholder": "joe@example.com",
+            "display_property": "dc:contributor",
+            "display_snippet": "email.html",
+            "display_email_name_field": "maintainer"
           }
       ]
-    },
-
+     }
+     # Composite Repeating Field
+     {
+      "field_name": "author",
+      "label": "Authors",
+      "preset": "composite_repeating",
+      "form_blanks": 1,
+      "subfields": [
+          {
+            "field_name": "name",
+            "label": "Name",
+            "form_placeholder":"eg. John Smith"
+          },
+          {
+            "field_name": "email",
+            "label": "Email",
+            "form_placeholder":"eg. john@server.com"
+          }
+       ]
+      }
 ------------------------
 Development Installation
 ------------------------
