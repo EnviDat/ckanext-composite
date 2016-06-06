@@ -1,0 +1,40 @@
+{% import 'macros/form.html' as form %}
+{% resource 'composite/composite-repeating.js' %}
+
+<p style="color:rgb(120, 120, 120);"><b>{{ field.label }}</b></p>
+
+{% set field_dict_list=h.composite_repeating_get_value_dict_list(field.field_name, field.subfields, data, field.form_blanks if 'form_blanks' in field else 1 ) %}
+<div data-module="composite-repeating">
+{% set index = 0 %}
+{% for field_dict in field_dict_list %}
+    {% set index = index + 1 %}
+    <div class="composite-control-repeating"> 
+    {% for subfield in field.subfields %}
+      {% set type = "text" %}
+      {% set name=field.field_name + '-' + index|string + '-' + subfield.field_name %}
+      {% set extra_html="" %}
+      {% set value=field_dict.get(subfield.field_name, '') %}
+      {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
+      {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
+      {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
+
+      {%- call form.input_block(
+        for='field-' + name,
+        label=h.scheming_language_text(subfield.label) + ' ' + index|string,
+        error=errors[name],
+        classes=['control-medium'],
+        control_classes=[],
+        extra_html="",
+        is_required=h.scheming_field_required(subfield)) -%}
+        <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
+               value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
+               {{ form.attributes(attrs) }} class="medinput"/>
+        {% endcall %}
+    {% endfor %}
+    <br>
+    </div>
+{% endfor %}
+</div>
+<hr>
+
+

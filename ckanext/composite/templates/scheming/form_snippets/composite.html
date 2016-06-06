@@ -1,8 +1,8 @@
 {% import 'macros/form.html' as form %}
 
 {% set field_dict=h.composite_get_value_dict(field.field_name, data) %}
-<hr>
-<p><b>{{ field.label }}</b><p> 
+
+<p style="color:rgb(120, 120, 120);"><b>{{ field.label }}</b></p>
 {% for subfield in field.subfields %}
   {% set type = "text" %}  
   {% set name=field.field_name + '-' + subfield.field_name %}
