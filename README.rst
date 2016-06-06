@@ -35,15 +35,15 @@ ckanext-composite
 .. Put a description of your extension here:
    What does it do? What features does it have?
    Consider including some screenshots or embedding a video!
+   
+Allows to store structured dataset metadata, single or multiple fields.
 
 
 ------------
 Requirements
 ------------
 
-For example, you might want to mention here which versions of CKAN this
-extension works with.
-
+Developed for CKAn version 2.5.2. Requires the extensions ckanext-scheming and ckanext-repeating (using version from repository eawag-rdm).
 
 ------------
 Installation
