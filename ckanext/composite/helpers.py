@@ -125,9 +125,6 @@ def composite_repeating_get_value_dict_list(field_name, subfields, data, field_b
 
         return value_dict_list
 
-    logger.debug('data=' + str(data))
-    logger.debug('subfields=' + str(subfields))
-
     value_dict_list = []
 
     form_value = build_value_dict_list()
@@ -141,6 +138,10 @@ def composite_repeating_get_value_dict_list(field_name, subfields, data, field_b
                value_dict_list = db_value
            else:
                value_dict_list = _json2list_or_empty(db_value)
+           # Compatibility
+           if isinstance(value_dict_list, dict):
+               value_dict_list = [value_dict_list]
+
 
     # Build empty dictionary for initial form
     if not value_dict_list:

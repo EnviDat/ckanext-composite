@@ -1,6 +1,9 @@
 {% set label_dict = h.composite_get_label_dict(field.subfields) %}
+{% set name_list = h.composite_get_name_list(field.subfields) %}
 {% set composite_dict = h.composite_get_as_dict(data[field.field_name]) %}
 
-   {% for key in composite_dict%}
-        <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},  
+   {% for key in name_list%}
+      {% if  composite_dict[key]|length >0 %}
+         <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},
+      {% endif %}
    {%endfor%}
