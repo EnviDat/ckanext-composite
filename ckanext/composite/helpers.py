@@ -50,6 +50,20 @@ def composite_get_label_dict(field_list):
         label_dict[name] = field.get('label', name)
     return label_dict
 
+def composite_get_choices_dict(field_list):
+    '''
+    Converts a list of dictionaries containing the keys
+    "field_name" and "choices" into a single dictionary
+    with "field_name" value as key and "choices" as value.
+    If choices is not defined, then an empty list is assigned.
+    '''
+
+    choices_dict = {}
+    for field in field_list:
+        name = field.get('field_name', '')
+        choices_dict[name] = field.get('choices', [])
+    return choices_dict
+
 def composite_get_name_list(field_list):
     '''
     Converts a list of dictionaries containing the key
@@ -70,7 +84,7 @@ def composite_get_value_dict(field_name, data):
     field comes from the database) or construct from several subfields -
     entries in case data wasn't saved yet, i.e. a validation error occurred.
     '''
-
+ 
     def build_value_dict():
         fields = [re.match(field_name + "-.+", key) for key in data.keys()]
         fields = sorted([r.string for r in fields if r])
@@ -98,13 +112,24 @@ def composite_get_value_dict(field_name, data):
 
     return value_dict
 
-def composite_repeating_get_value_dict_list(field_name, subfields, data, field_blanks = 1):
+def composite_repeating_get_value_dict_list(field_name, subfields, data, field_blanks = 1, include_empty = True):
     '''
     Template helper function.
     Get data from composite_text-field from either field_name (if the
     field comes from the database) or construct from several subfields -
     entries in case data wasn't saved yet, i.e. a validation error occurred.
     '''
+
+    def dict_is_empty(dictionary):
+        is_empty = not bool([a for a in dictionary.values() if a != ''])
+        return is_empty
+
+    def remove_empty_dicts(dict_list):
+        non_empty_list = []
+        for item in dict_list:
+            if not dict_is_empty(item):
+                non_empty_list += [item]
+        return non_empty_list
 
     def build_value_dict_list():
         fields = [re.match(field_name + "-.+", key) for key in data.keys()]
@@ -152,6 +177,9 @@ def composite_repeating_get_value_dict_list(field_name, subfields, data, field_b
            for subfield in subfields:
                blank_dict[subfield['field_name']] = ''
            value_dict_list += [blank_dict]
+
+    if not include_empty:
+        value_dict_list = remove_empty_dicts(value_dict_list)
 
     return value_dict_list
 

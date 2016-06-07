@@ -25,5 +25,6 @@ class CompositePlugin(plugins.SingletonPlugin):
         return { 'composite_get_as_dict': helpers.composite_get_as_dict,
                  'composite_get_value_dict': helpers.composite_get_value_dict,
                  'composite_get_label_dict': helpers.composite_get_label_dict,
+                 'composite_get_choices_dict': helpers.composite_get_choices_dict,
                  'composite_get_name_list': helpers.composite_get_name_list,
                  'composite_repeating_get_value_dict_list': helpers.composite_repeating_get_value_dict_list }

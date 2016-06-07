@@ -1,26 +1,22 @@
 {% set label_dict = h.composite_get_label_dict(field.subfields) %}
+{% set choices_dict = h.composite_get_choices_dict(field.subfields) %}
 {% set name_list = h.composite_get_name_list(field.subfields) %}
-{% set composite_dict_list = h.composite_repeating_get_value_dict_list(field.field_name, field.subfields, data, field.form_blanks) %}
+{% set composite_dict_list = h.composite_repeating_get_value_dict_list(field.field_name, field.subfields, data, field.form_blanks, false) %}
 
-{%- if composite_dict_list|length == 1 -%}
-  {% set composite_dict = composite_dict_list[0] %}
-  {% for key in composite_dict%}
-       {% if  composite_dict[key]|length >0 %}
-          <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},  
-       {% endif %}
-  {%endfor%}
-
-{%- else -%}
-  <ul>
-    {%- for composite_dict in composite_dict_list -%}
+<ul>
+ {% for composite_dict in composite_dict_list %}
        <li>
        {% for key in name_list %}
-          {% if  composite_dict[key]|length >0 %}
-             <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},
+          {% if composite_dict[key]|length > 0 %}
+             {% if choices_dict[key]|length > 0  %}
+                {% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %} 
+             {% else %}
+                {% set value = composite_dict[key] %} 
+             {% endif %}
+             <b> {{ label_dict[key] }}: </b> {{ value }},  
           {% endif %}
-       {%endfor%}
+      {% endfor %}
        </li>
-    {%- endfor -%}
-  </ul>
-{%- endif -%}
+ {% endfor %}
+</ul>
 

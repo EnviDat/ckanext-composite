@@ -2,6 +2,9 @@ import json
 
 from ckanext.scheming.validation import scheming_validator
 from ckantoolkit import _
+import logging
+
+logger = logging.getLogger(__name__)
 
 @scheming_validator
 def composite_group2json(field, schema):
@@ -44,7 +47,7 @@ def composite_group2json_output(value):
     try:
         return json.loads(value)
     except ValueError:
-        print "composite_group2json_output: VALUE ERROR!" + str(value)
+        logger.warn ("ValeError: " + str(value))
         return {}
 
 @scheming_validator
@@ -57,6 +60,7 @@ def composite_repeating_group2json(field, schema):
         for name,text in data.iteritems():
             if name[-1] == key[-1]:
                if text:
+                   logger.debug('*' + str(name) + ': ' + str(text))
                    value = text
 
         if not value:
@@ -70,6 +74,8 @@ def composite_repeating_group2json(field, schema):
                   continue
                if not text:
                   continue
+               logger.debug('*(extras) ' + str(name) + ': ' + str(text))
+
 
                index = int(name.split('-', 2)[1])
                subfield = name.split('-', 2)[2]
