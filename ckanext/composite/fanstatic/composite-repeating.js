@@ -96,17 +96,14 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
         var index = parseInt(target.id.split("-").pop());
         var field = $(target).parents(".composite-control-repeating").first();
         if (index>1) {
-            console.log("Delete: " + target.id.split("-").pop() + " element");
             field.remove();
         }
         else {
-            console.log("Clear: " + target.id.split("-").pop() + " element");
             field.find(':input').val('');
         }
     },
     /* Event handler called when the add checkbox is changed */
     _onChange: function (event) {
-      console.log(event.currentTarget.id);
       if (event.currentTarget.id === "add-field"){
           var lastFieldContainer = this.el.find(this.options.fieldSelector + ':last');
           this.newField(lastFieldContainer);
