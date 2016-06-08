@@ -60,7 +60,7 @@ def composite_repeating_group2json(field, schema):
         for name,text in data.iteritems():
             if name[-1] == key[-1]:
                if text:
-                   logger.debug('*' + str(name) + ': ' + str(text))
+                   logger.debug('*' + str(name) + ': ' + repr(text))
                    value = text
 
         if not value:
@@ -74,7 +74,7 @@ def composite_repeating_group2json(field, schema):
                   continue
                if not text:
                   continue
-               logger.debug('*(extras) ' + str(name) + ': ' + str(text))
+               logger.debug('*(extras) ' + str(name) + ': ' + str(repr(text)))
 
 
                index = int(name.split('-', 2)[1])
