@@ -36,7 +36,7 @@ ckanext-composite
    What does it do? What features does it have?
    Consider including some screenshots or embedding a video!
    
-Allows to store structured dataset metadata, single or multiple fields.
+Allows to store structured dataset metadata, single or multiple fields. Only one level of subfields is possible. The subfields can be basic text o choice dropboxes. Do not use dashes or numbers in the labels or values of fields.
 
 
 ------------
@@ -95,17 +95,13 @@ Add this to your schema.json file::
           {
             "field_name": "name",
             "label": "Name",
-            "form_placeholder": "Joe Bloggs",
-            "display_property": "dc:contributor"
+            "form_placeholder": "Joe Bloggs"
           },
           {
             "field_name": "email",
             "label": "Email",
-            "form_placeholder": "joe@example.com",
-            "display_property": "dc:contributor",
-            "display_snippet": "email.html",
-            "display_email_name_field": "maintainer"
-          }
+            "form_placeholder": "joe@example.com"
+           }
       ]
      }
      # Composite Repeating Field
@@ -121,12 +117,22 @@ Add this to your schema.json file::
             "form_placeholder":"eg. John Smith"
           },
           {
-            "field_name": "email",
-            "label": "Email",
-            "form_placeholder":"eg. john@server.com"
+            "field_name": "type",
+            "label": "Type",
+            choices = [
+             {
+                "value": "collaborator",
+                "label": "Collaborator"
+              },
+              {
+                "value": "editor",
+                "label": "Editor"
+              }
+            ]
           }
        ]
       }
+      
 ------------------------
 Development Installation
 ------------------------
