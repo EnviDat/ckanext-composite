@@ -15,15 +15,29 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
      * Returns nothing.
      */
     initialize: function () {
+
       if (!jQuery('html').hasClass('ie7')) {
         jQuery.proxyAll(this, /_on/);
 
-        console.log("Create plus field");
+        // Create 'minus field' checkbox and add to first input of every container.
+        function getMinusButton(index){
+            var checkbox_minus = $('<label class="checkbox btn btn-danger icon-minus"><input type="checkbox" /></label>');
+            checkbox_minus.attr("id", "label-remove-field-" + index);
+            checkbox_minus.attr("name", "label-remove-field-" + index);
+            checkbox_minus.find(':checkbox').attr("id", "remove-field-" + index);
+            checkbox_minus.find(':checkbox').attr("name", "remove-field-" + index);
+            return checkbox_minus;
+        }
+
+        var onChangeFn = this._onChange;
+        var fieldContainers = this.el.find(this.options.fieldSelector);
+        $(fieldContainers).each(function(index) {$(this).find('.controls:first').append(getMinusButton(index+1))});
+        $(fieldContainers).find('.controls:first').find(".icon-minus").each(function() { $(this).on('change', ':checkbox', onChangeFn); $(this).children(':checkbox').hide();});
+
         // Create 'plus field' checkbox and add to first input container.
         var firstFieldContainer = this.el.find(this.options.fieldSelector + ':first .controls:first');
-        console.log(this.el.find(this.options.fieldSelector + ':first'));
 
-        var checkbox = $('<label class="checkbox btn btn-success icon-plus"><input type="checkbox" id="add-field" /></label>');
+        var checkbox = $('<label class="checkbox btn btn-success icon-plus"  style="margin-left:5px"><input type="checkbox" id="add-field" style="padding:5px"/></label>');
         checkbox.on('change', ':checkbox', this._onChange);
 	checkbox.children(':checkbox').hide();
         $(firstFieldContainer).append(checkbox);
@@ -51,7 +65,7 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
      * Returns a newly created custom field element.
      */
     cloneField: function (current) {
-      return this.resetField(jQuery(current).clone());
+      return this.resetField(jQuery(current).clone(true,true));
     },
 
     /* Wipe the contents of the field provided and increment its `name`, `id`
@@ -71,18 +85,35 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
       input.val('').attr('id', increment).attr('name', increment);
 
       var label = field.find('label');
-      label.text(increment).attr('for', increment);
+      label.each(function(){ if (! $(this).hasClass("icon-minus")) {$(this).text(increment).attr('for', increment)}});
 
-      field.find('.checkbox').remove();
+      field.find('.icon-plus').remove();
       field.find('button.outsidebutton').remove();
 
       return field;
     },
-
+    deleteField: function(target){
+        var index = parseInt(target.id.split("-").pop());
+        var field = $(target).parents(".composite-control-repeating").first();
+        if (index>1) {
+            console.log("Delete: " + target.id.split("-").pop() + " element");
+            field.remove();
+        }
+        else {
+            console.log("Clear: " + target.id.split("-").pop() + " element");
+            field.find(':input').val('');
+        }
+    },
     /* Event handler called when the add checkbox is changed */
     _onChange: function (event) {
-      var lastFieldContainer = this.el.find(this.options.fieldSelector + ':last');
-      this.newField(lastFieldContainer);
+      console.log(event.currentTarget.id);
+      if (event.currentTarget.id === "add-field"){
+          var lastFieldContainer = this.el.find(this.options.fieldSelector + ':last');
+          this.newField(lastFieldContainer);
+      }
+      else{
+          this.deleteField(event.currentTarget);
+      }
     }
   };
 });
