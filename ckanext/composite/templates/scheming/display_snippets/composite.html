@@ -1,9 +1,15 @@
 {% set label_dict = h.composite_get_label_dict(field.subfields) %}
+{% set choices_dict = h.composite_get_choices_dict(field.subfields) %}
 {% set name_list = h.composite_get_name_list(field.subfields) %}
 {% set composite_dict = h.composite_get_as_dict(data[field.field_name]) %}
 
    {% for key in name_list%}
       {% if  composite_dict[key]|length >0 %}
-         <b>{{ label_dict[key] }}: </b> {{ composite_dict[key] }},
+         {% if choices_dict[key]|length > 0  %}
+             {% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %}
+         {% else %}
+             {% set value = composite_dict[key] %}
+         {% endif %}
+         <b>{{ label_dict[key] }}:</b>&nbsp;{{ value }},
       {% endif %}
    {%endfor%}

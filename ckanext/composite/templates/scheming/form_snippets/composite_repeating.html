@@ -25,7 +25,7 @@
           {% call form.select(
              name,
              id=name,
-             label=h.scheming_language_text(subfield.label),
+             label=h.scheming_language_text(subfield.label) + ' ' + index|string,
              options=options,
              selected=value,
              error=errors[name],
