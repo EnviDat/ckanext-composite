@@ -1,7 +1,8 @@
 {% import 'macros/form.html' as form %}
 {% resource 'composite/composite-repeating.js' %}
+{% resource 'composite/composite.css' %}
 
-<p style="color:rgb(120, 120, 120);"><b>{{ field.label }}</b></p>
+{%- snippet 'scheming/form_snippets/composite_header.html', field=field, inline=field.help_inline -%}
 
 {% set field_dict_list=h.composite_repeating_get_value_dict_list(field.field_name, field.subfields, data, field.form_blanks if 'form_blanks' in field else 1 ) %}
 <div data-module="composite-repeating">

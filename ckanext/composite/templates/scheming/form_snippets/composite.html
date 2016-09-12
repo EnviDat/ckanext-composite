@@ -2,7 +2,8 @@
 
 {% set field_dict=h.composite_get_value_dict(field.field_name, data) %}
 
-<p style="color:rgb(120, 120, 120);"><b>{{ field.label }}</b></p>
+{%- snippet 'scheming/form_snippets/composite_header.html', field=field, inline=field.help_inline -%}
+
 {% for subfield in field.subfields %}
    {% set name=field.field_name + '-' + subfield.field_name %}
    {% set value=field_dict.get(subfield.field_name, '') %}

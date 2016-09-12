@@ -1,0 +1,15 @@
+p.composite-header {
+    color: rgb(120,120,120);
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+
+div.composite-header {
+    display: block;
+    padding-bottom: 10px;
+}
+
+div.composite-header div.info-inline{
+    max-width: 165px;
+}

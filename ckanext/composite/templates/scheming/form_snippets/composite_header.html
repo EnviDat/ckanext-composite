@@ -1,0 +1,12 @@
+
+<div class="composite-header">
+  <p class="composite-header">{{ field.label }}</p>
+  {% set help_text = h.scheming_language_text(field.help_text)%}
+  <div class="info-block {{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }} composite-header-info">
+  {% if help_text %}
+       <i class="icon-info-sign"></i>
+       {{ help_text }}
+  {% endif %}
+  </div>
+</div>
+
