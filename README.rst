@@ -101,7 +101,22 @@ Add this to your schema.json file::
             "field_name": "email",
             "label": "Email",
             "form_placeholder": "joe@example.com"
-           }
+           },
+           {
+            "field_name": "identifier_scheme",
+            "label": "Scheme",
+            "preset": "select",
+            "choices": [
+              {
+                "value": "orcid",
+                "label": "ORCID"
+              },
+              {
+                "value": "isni",
+                "label": "ISNI"
+              }
+           ]
+         }
       ]
      }
      # Composite Repeating Field
