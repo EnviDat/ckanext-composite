@@ -10,7 +10,9 @@
 {% for field_dict in field_dict_list %}
     {% set index = index + 1 %}
     <div class="composite-control-repeating"> 
+    {% set subfield_index = 0 %}
     {% for subfield in field.subfields %}
+      {% set subfield_index = subfield_index + 1 %}
       {% set name=field.field_name + '-' + index|string + '-' + subfield.field_name %}
       {% set value=field_dict.get(subfield.field_name, '') %}
       
@@ -35,6 +37,9 @@
              is_required=h.scheming_field_required(subfield)
             )
            %}
+           {% if subfield_index>1 %}
+              {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
+           {% endif %}
            {% endcall %}
       {% else %}
         {% set type = "text" %}
@@ -54,7 +59,17 @@
           <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
                value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
                {{ form.attributes(attrs) }} class="medinput"/>
+          {% if subfield_index>1 %}
+             {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
+          {% endif %}
         {% endcall %}
+      {% endif %}
+      {% if subfield_index==1 %}
+         {% if subfield.help_text %}
+            <div class="first-subfield-info {{ ' first-subfield-info-inline' if subfield.help_inline }}">
+             {{ form.info(text=h.scheming_language_text(subfield.help_text), inline=subfield.help_inline)}}
+            </div>
+         {% endif %}
       {% endif %}
     {% endfor %}
     <br>
