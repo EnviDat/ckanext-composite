@@ -18,7 +18,7 @@ class CompositePlugin(plugins.SingletonPlugin):
     def get_validators(self):
         return { "composite_group2json": validators.composite_group2json ,
                  "composite_group2json_output": validators.composite_group2json_output,
-                 "composite_repeating_group2json":validators.composite_repeating_group2json  }
+                 "composite_repeating_group2json":validators.composite_repeating_group2json }
 
     # ITemplateHelpers
     def get_helpers(self):

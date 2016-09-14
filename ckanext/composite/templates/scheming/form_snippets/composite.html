@@ -24,7 +24,7 @@
          error=errors[name],
          classes=['mediunput'],
          attrs=subfield.form_attrs if 'form_attrs' in subfield else {},
-         is_required=h.scheming_field_required(subfield)
+         is_required=h.scheming_field_required(subfield) or h.scheming_field_required(field) 
         )
       %}
      {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
@@ -43,7 +43,8 @@
        classes=['control-medium'],
        control_classes=[],
        extra_html="",
-       is_required=h.scheming_field_required(subfield)) -%}
+       is_required=h.scheming_field_required(subfield) 
+       ) -%}
        <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
           value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
           {{ form.attributes(attrs) }} class="medinput"/>
