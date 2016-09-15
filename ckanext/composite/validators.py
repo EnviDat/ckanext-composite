@@ -16,6 +16,9 @@ not_empty = get_validator('not_empty')
 
 
 def composite_not_empty_subfield(key, subfield_label, value, errors):
+    ''' Function equivalent to ckan.lib.navl.validators.not_empty
+         but for subfields (custom message including subfield)
+    '''
     if not value or value is missing:
         errors[key].append(_('Missing value at required subfield ' + subfield_label))
         raise StopOnError
@@ -24,8 +27,6 @@ def composite_not_empty_subfield(key, subfield_label, value, errors):
 def composite_group2json(field, schema):
 
     def validator(key, data, errors, context):
-        print(" \n ***************** composite_group2json " + str(key))
-        required = sh.scheming_field_required(field)
 
         value = ""
 	for name,text in data.iteritems():
@@ -34,6 +35,7 @@ def composite_group2json(field, schema):
                     logger.debug('*' + str(name) + ': ' + repr(text))
                     value = text
 
+        # Parse from extras into a dictionary and save it as a json dump
         if not value:
             found = {}
             prefix = key[-1] + '-'
@@ -49,42 +51,23 @@ def composite_group2json(field, schema):
             if not found:
                 data[key] = ""
             else:
+                # Check if there is any mandatory subfield required
                 for schema_subfield in field['subfields']:
-                    print('\t - '+ schema_subfield['field_name'])
-                    print(schema_subfield)
                     if schema_subfield.get('required', False):
                         subfield_label = schema_subfield.get('label', schema_subfield.get('field_name', ''))
                         subfield_value = found.get(schema_subfield.get('field_name', ''), "")
                         composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
                 data[key] = json.dumps(found, ensure_ascii=False)
-
-        if required:
+        # Check if the field is required
+        if sh.scheming_field_required(field):
             not_empty(key, data, errors, context)
 
     return validator
-
-
-def composite_group2json_output(value):
-     """
-     Return stored json representation as a dictionary, if
-     value is already a dictionary just pass it through.
-     """
-     if isinstance(value, dict):
-         return value
-     if value is None:
-         return {}
-     try:
-         return json.loads(value)
-     except ValueError:
-         logger.warn ("ValeError: " + str(value))
-     return {}
 
 @scheming_validator
 def composite_repeating_group2json(field, schema):
 
      def validator(key, data, errors, context):
-
-          required = sh.scheming_field_required(field)
 
           value = ""
 
@@ -93,7 +76,7 @@ def composite_repeating_group2json(field, schema):
                   if text:
                       logger.debug('*' + str(name) + ': ' + repr(text))
                       value = text
-
+          # parse from extra into a list of dictionaries and save it as a json dump
           if not value:
               found = {}
               prefix = key[-1] + '-'
@@ -117,9 +100,35 @@ def composite_repeating_group2json(field, schema):
               if not found_list:
                   data[key] = ""
               else:
+                  # check if there are required subfields missing for every item
+                  for index in found:
+                      item = found[index]
+                      for schema_subfield in field['subfields']:
+                         if schema_subfield.get('required', False):
+                             subfield_label = schema_subfield.get('label', schema_subfield.get('field_name', '')) + " " + str(index) 
+                             subfield_value = item.get(schema_subfield.get('field_name', ''), "")
+                             composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
+                  # dump the list to a string
                   data[key] = json.dumps(found_list, ensure_ascii=False)
-          if required:
+
+          # check if the field is required
+          if sh.scheming_field_required(field):
               not_empty(key, data, errors, context)
 
      return validator
+
+def composite_group2json_output(value):
+     """
+     Return stored json representation as a dictionary, if
+     value is already a dictionary just pass it through.
+     """
+     if isinstance(value, dict):
+         return value
+     if value is None:
+         return {}
+     try:
+         return json.loads(value)
+     except ValueError:
+         logger.warn ("ValeError: " + str(value))
+     return {}
 
