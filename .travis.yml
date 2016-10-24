@@ -3,7 +3,7 @@ language: python
 python:
     - "2.7"
 env: 
-    - CKANVERSION=master POSTGISVERSION=2
+    - CKANVERSION=master PGVERSION=9.1
 install:
     - bash bin/travis-build.bash
     - pip install coveralls
