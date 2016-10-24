@@ -61,6 +61,9 @@ python setup.py develop
 #pip install -r requirements.txt
 cd -
 
+echo "Fixing issue with pytz..."
+pip install pytz==2016.4
+
 echo "Installing ckanext-composite and its requirements..."
 python setup.py develop
 pip install -r dev-requirements.txt
