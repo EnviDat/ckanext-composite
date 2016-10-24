@@ -1,9 +1,9 @@
 language: python
-sudo: required
+#sudo: required
 python:
-    - "2.6"
     - "2.7"
-env: PGVERSION=9.1
+env: 
+    - CKANVERSION=master POSTGISVERSION=2
 install:
     - bash bin/travis-build.bash
     - pip install coveralls
