@@ -5,8 +5,8 @@
 .. image:: https://travis-ci.org/espona/ckanext-composite.svg?branch=master
     :target: https://travis-ci.org/espona/ckanext-composite
 
-.. image:: https://coveralls.io/repos/espona/ckanext-composite/badge.svg
-  :target: https://coveralls.io/r/espona/ckanext-composite
+.. image:: https://coveralls.io/repos/github/espona/ckanext-composite/badge.svg?branch=master
+    :target: https://coveralls.io/github/espona/ckanext-composite?branch=master
 
 .. image:: https://pypip.in/download/ckanext-composite/badge.svg
     :target: https://pypi.python.org/pypi//ckanext-composite/
