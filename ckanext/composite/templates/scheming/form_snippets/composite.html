@@ -6,7 +6,10 @@
 
 {% for subfield in field.subfields %}
    {% set name=field.field_name + '-' + subfield.field_name %}
-   {% set value=field_dict.get(subfield.field_name, '') %}
+   {% set value = '' %}
+   {% if field_dict is mapping %}
+      {% set value=field_dict.get(subfield.field_name, '') %}
+   {% endif %}
    {% if subfield.get('choices', false) %}
       {%- set options=[] -%}
       {%- if not h.scheming_field_required(subfield) or subfield.get('form_include_blank_choice', true) -%}
@@ -31,16 +34,21 @@
      {% endcall %}
    {% else %}
      {% set type = "text" %}
+     {% set classes = ['control-medium']%}
      {% set extra_html="" %}
      {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
      {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
      {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
-
+     {% if subfield.get("preset", "") == "date" %}
+        {% set value= field_dict.get(subfield.field_name, '').split()[0] if field_dict is mapping else '' %}
+        {% set type = "date" %}
+        {% set classes = []%}
+     {% endif %}
      {%- call form.input_block(
        for='field-' + name,
        label=h.scheming_language_text(subfield.label),
        error=errors[name],
-       classes=['control-medium'],
+       classes=classes,
        control_classes=[],
        extra_html="",
        is_required=h.scheming_field_required(subfield) 

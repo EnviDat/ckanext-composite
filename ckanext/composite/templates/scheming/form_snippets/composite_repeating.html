@@ -43,25 +43,31 @@
            {% endcall %}
       {% else %}
         {% set type = "text" %}
+        {% set classes = ['control-medium']%}
+        {% set input_extra_html = "" %}
         {% set extra_html="" %}
         {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
         {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
         {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
-
+        {% if subfield.get("preset", "") == "date" %}
+           {% set value=field_dict.get(subfield.field_name, '').split()[0] %}
+           {% set type = "date" %}
+           {% set classes = []%}
+        {% endif %}
         {%- call form.input_block(
           for='field-' + name,
           label=h.scheming_language_text(subfield.label) + ' ' + index|string,
           error=errors[name],
-          classes=['control-medium'],
+          classes=classses,
           control_classes=[],
           extra_html="",
           is_required=h.scheming_field_required(subfield)) -%}
-          <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
-               value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
-               {{ form.attributes(attrs) }} class="medinput"/>
-          {% if subfield_index>1 %}
-             {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
-          {% endif %}
+            <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
+                 value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
+                 {{ form.attributes(attrs) }} class="medinput"/>
+            {% if subfield_index>1 %}
+               {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
+            {% endif %}
         {% endcall %}
       {% endif %}
       {% if subfield_index==1 %}
