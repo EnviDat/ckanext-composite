@@ -36,7 +36,7 @@ ckanext-composite
    What does it do? What features does it have?
    Consider including some screenshots or embedding a video!
    
-Allows to store structured dataset metadata, single or multiple fields. Only one level of subfields is possible. The subfields can be basic text o choice dropboxes. Do not use dashes or numbers in the labels or values of fields.
+Allows to store structured dataset metadata, single or multiple fields. Only one level of subfields is possible. The subfields can be basic text, date type o choice dropboxes. Do not use dashes or numbers in the labels or values of fields.
 
 
 ------------
@@ -101,6 +101,12 @@ Add this to your schema.json file::
             "field_name": "email",
             "label": "Email",
             "form_placeholder": "joe@example.com"
+           },
+          {
+            "field_name": "date",
+            "label": "Date",
+            "preset": "date",
+            "form_placeholder": "yyyy-mm-mm"
            },
            {
             "field_name": "identifier_scheme",
