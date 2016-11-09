@@ -29,7 +29,7 @@ def composite_group2json(field, schema):
     def validator(key, data, errors, context):
 
         value = ""
-	for name,text in data.iteritems():
+        for name,text in data.iteritems():
             if name[-1] == key[-1]:
                 if text:
                     logger.debug('*' + str(name) + ': ' + repr(text))
@@ -67,68 +67,71 @@ def composite_group2json(field, schema):
 @scheming_validator
 def composite_repeating_group2json(field, schema):
 
-     def validator(key, data, errors, context):
+    def validator(key, data, errors, context):
 
-          value = ""
+        value = ""
 
-          for name,text in data.iteritems():
-              if name[-1] == key[-1]:
-                  if text:
-                      logger.debug('*' + str(name) + ': ' + repr(text))
-                      value = text
-          # parse from extra into a list of dictionaries and save it as a json dump
-          if not value:
-              found = {}
-              prefix = key[-1] + '-'
-              extras = data.get(key[:-1] + ('__extras',), {})
+        for name,text in data.iteritems():
+            if name[-1] == key[-1]:
+                if text:
+                    logger.debug('*' + str(name) + ': ' + repr(text))
+                    value = text
+        # parse from extra into a list of dictionaries and save it as a json dump
+        if not value:
+            found = {}
+            prefix = key[-1] + '-'
+            extras = data.get(key[:-1] + ('__extras',), {})
 
-              for name, text in extras.iteritems():
-                  if not name.startswith(prefix):
-                      continue
-                  if not text:
-                      continue
-                  logger.debug('*(extras) ' + str(name) + ': ' + str(repr(text)))
+            for name, text in extras.iteritems():
+                if not name.startswith(prefix):
+                    continue
+                if not text:
+                    continue
+                logger.debug('*(extras) ' + str(name) + ': ' + str(repr(text)))
 
-                  index = int(name.split('-', 2)[1])
-                  subfield = name.split('-', 2)[2]
+                index = int(name.split('-', 2)[1])
+                subfield = name.split('-', 2)[2]
 
-                  if not found.has_key(index):
+                if not found.has_key(index):
                       found[index] = {}
-                  found[index][subfield] = text
-              found_list = [element[1] for element in sorted(found.items())]
+                found[index][subfield] = text
+            found_list = [element[1] for element in sorted(found.items())]
 
-              if not found_list:
-                  data[key] = ""
-              else:
-                  # check if there are required subfields missing for every item
-                  for index in found:
-                      item = found[index]
-                      for schema_subfield in field['subfields']:
-                         if schema_subfield.get('required', False):
-                             subfield_label = schema_subfield.get('label', schema_subfield.get('field_name', '')) + " " + str(index) 
-                             subfield_value = item.get(schema_subfield.get('field_name', ''), "")
-                             composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
-                  # dump the list to a string
-                  data[key] = json.dumps(found_list, ensure_ascii=False)
+            if not found_list:
+                data[key] = ""
+            else:
+                # check if there are required subfields missing for every item
+                for index in found:
+                    item = found[index]
+                    for schema_subfield in field['subfields']:
+                        if schema_subfield.get('required', False):
+                            if type(schema_subfield.get('label', '')) is dict:
+                                subfield_label = schema_subfield.get('field_name', '') + " " + str(index)
+                            else:
+                                subfield_label = schema_subfield.get('label', schema_subfield.get('field_name', '')) + " " + str(index)
+                            
+                            subfield_value = item.get(schema_subfield.get('field_name', ''), "")
+                            composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
+                # dump the list to a string
+                data[key] = json.dumps(found_list, ensure_ascii=False)
 
-          # check if the field is required
-          if sh.scheming_field_required(field):
-              not_empty(key, data, errors, context)
+        # check if the field is required
+        if sh.scheming_field_required(field):
+            not_empty(key, data, errors, context)
 
-     return validator
+    return validator
 
 def composite_group2json_output(value):
-     """
-     Return stored json representation as a dictionary, if
-     value is already a dictionary just pass it through.
-     """
-     if isinstance(value, dict):
-         return value
-     if value is None:
-         return {}
-     try:
-         return json.loads(value)
-     except ValueError:
-         logger.warn ("ValeError: " + str(value))
-     return {}
-
+    """
+    Return stored json representation as a dictionary, if
+    value is already a dictionary just pass it through.
+    """
+    if isinstance(value, dict):
+        return value
+    if value is None:
+        return {}
+    try:
+        return json.loads(value)
+    except ValueError:
+        logger.warn ("ValeError: " + str(value))
+    return {}
