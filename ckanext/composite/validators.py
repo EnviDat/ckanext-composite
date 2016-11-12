@@ -27,7 +27,6 @@ def composite_not_empty_subfield(key, subfield_label, value, errors):
 def composite_group2json(field, schema):
 
     def validator(key, data, errors, context):
-
         value = ""
         for name,text in data.iteritems():
             if name[-1] == key[-1]:
@@ -61,7 +60,6 @@ def composite_group2json(field, schema):
         # Check if the field is required
         if sh.scheming_field_required(field):
             not_empty(key, data, errors, context)
-
     return validator
 
 @scheming_validator
@@ -69,13 +67,27 @@ def composite_repeating_group2json(field, schema):
 
     def validator(key, data, errors, context):
 
+        logger.debug('\n***********' +  'composite_repeating_group2json: ' + str(key))
+        logger.debug(field)
+        logger.debug('BEFORE')
+        #logger.debug(data)
+
         value = ""
 
         for name,text in data.iteritems():
-            if name[-1] == key[-1]:
+            if name == key:
                 if text:
-                    logger.debug('*' + str(name) + ': ' + repr(text))
-                    value = text
+                    logger.debug(name)
+                    logger.debug(key)
+                    logger.debug(name == key)
+                    logger.debug('text*' + str(name) + ': ' + repr(text))
+                    logger.debug('type:' + repr(type(text)))
+                    if isinstance(text, basestring):
+                        value = text
+                        logger.debug('TEXT')
+                    else:
+                        logger.debug('NOT TEXT')
+                        value = text
         # parse from extra into a list of dictionaries and save it as a json dump
         if not value:
             found = {}
@@ -98,6 +110,7 @@ def composite_repeating_group2json(field, schema):
             found_list = [element[1] for element in sorted(found.items())]
 
             if not found_list:
+                logger.debug("Not found")
                 data[key] = ""
             else:
                 # check if there are required subfields missing for every item
@@ -118,6 +131,8 @@ def composite_repeating_group2json(field, schema):
         # check if the field is required
         if sh.scheming_field_required(field):
             not_empty(key, data, errors, context)
+        logger.debug('AFTER')
+        #logger.debug(data)
 
     return validator
 
