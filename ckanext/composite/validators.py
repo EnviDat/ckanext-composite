@@ -39,6 +39,7 @@ def composite_group2json(field, schema):
             prefix = key[-1] + '-'
             extras = data.get(key[:-1] + ('__extras',), {})
 
+            extras_to_delete = []
             for name, text in extras.iteritems():
                 if not name.startswith(prefix):
                     continue
@@ -46,6 +47,7 @@ def composite_group2json(field, schema):
                     continue
                 subfield = name.split('-', 1)[1]
                 found[subfield] = text
+                extras_to_delete += [name]
             if not found:
                 data[key] = ""
             else:
@@ -56,6 +58,11 @@ def composite_group2json(field, schema):
                         subfield_value = found.get(schema_subfield.get('field_name', ''), "")
                         composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
                 data[key] = json.dumps(found, ensure_ascii=False)
+
+                # delete the extras to avoid duplicate fields
+                for extra in extras_to_delete:
+                    del extras[extra]
+
         # Check if the field is required
         if sh.scheming_field_required(field):
             not_empty(key, data, errors, context)
