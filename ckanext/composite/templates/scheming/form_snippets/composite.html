@@ -10,6 +10,9 @@
    {% if field_dict is mapping %}
       {% set value=field_dict.get(subfield.field_name, '') %}
    {% endif %}
+   {% if subfield.get('preset', '') == 'tag_string_autocomplete' %}
+      {%- snippet 'scheming/form_snippets/composite_tag_string_autocomplete.html', subfield=subfield, name=name, value=value, errors = errors -%}
+   {% else %}
    {% if subfield.get('choices', false) %}
       {%- set options=[] -%}
       {%- if not h.scheming_field_required(subfield) or subfield.get('form_include_blank_choice', true) -%}
@@ -59,6 +62,7 @@
 
      {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
      {% endcall %}
+   {% endif %}
    {% endif %}
 {% endfor %}
 <hr>

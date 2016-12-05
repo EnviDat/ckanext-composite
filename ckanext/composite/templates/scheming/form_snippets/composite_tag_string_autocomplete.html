@@ -1,0 +1,19 @@
+{% import 'macros/form.html' as form %}
+     {% set data_module_source = subfield['data-module-source'] if 'data-module-source' in subfield else '/api/2/util/tag/autocomplete?incomplete=?' %}
+
+     {% set autocomplete_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': data_module_source} %}
+
+
+     {% set type = "text" %}
+     {% set classes = ['control-medium']%}
+     {% set extra_html="" %}
+     {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
+     {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
+     {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
+
+
+     {{ form.input(name, label=h.scheming_language_text(subfield.label), id=(id or name), 
+                   placeholder=placeholder, value=(value | empty_and_escape), error=errors[name], 
+                   classes=['control-full'], is_required=h.scheming_field_required(subfield), attrs=autocomplete_attrs) }}
+
+
