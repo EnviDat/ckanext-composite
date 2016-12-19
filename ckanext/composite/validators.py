@@ -43,8 +43,8 @@ def composite_group2json(field, schema):
             for name, text in extras.iteritems():
                 if not name.startswith(prefix):
                     continue
-                if not text:
-                    continue
+                #if not text:
+                #    continue
                 subfield = name.split('-', 1)[1]
                 found[subfield] = text
                 extras_to_delete += [name]
