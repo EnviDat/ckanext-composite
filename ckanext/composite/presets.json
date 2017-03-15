@@ -8,7 +8,8 @@
       "values": {
          "form_snippet": "composite.html",
          "display_snippet": "composite.html",
-         "validators": "composite_group2json"
+         "validators": "composite_group2json",
+         "output_validators": "composite_group2json_output"
        }
     },
     {
@@ -16,7 +17,8 @@
       "values": {
          "form_snippet": "composite_repeating.html",
          "display_snippet": "composite_repeating.html",
-         "validators": "composite_repeating_group2json"
+         "validators": "composite_repeating_group2json",
+         "output_validators": "composite_group2json_output"
        }
     }
   ]
