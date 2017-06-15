@@ -27,4 +27,5 @@ class CompositePlugin(plugins.SingletonPlugin):
                  'composite_get_label_dict': helpers.composite_get_label_dict,
                  'composite_get_choices_dict': helpers.composite_get_choices_dict,
                  'composite_get_name_list': helpers.composite_get_name_list,
-                 'composite_repeating_get_value_dict_list': helpers.composite_repeating_get_value_dict_list }
+                 'composite_repeating_get_value_dict_list': helpers.composite_repeating_get_value_dict_list,
+                 'composite_is_mail': helpers.composite_is_mail }

@@ -13,7 +13,12 @@
              {% else %}
                 {% set value = composite_dict[key] %} 
              {% endif %}
-             <b>{{ label_dict[key] }}:</b>&nbsp;{{ value }},  
+             <b>{{ label_dict[key] }}:</b>&nbsp;
+             {% if h.composite_is_mail(value) %}
+               {{ value.split('@')[0] }}<span style="display:none">foo</span>(at){{ value.split('@')[1] }},
+             {% else %}
+               {{ value }},
+             {% endif %}
           {% endif %}
       {% endfor %}
        </li>
