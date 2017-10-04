@@ -7,7 +7,7 @@
   {% set help_text = h.scheming_language_text(field.help_text)%}
   <div class="info-block {{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }} composite-header-info">
   {% if help_text %}
-       <i class="icon-info-sign"></i>
+       <i class="fa fa-info-circle"></i>
        {{ help_text }}
   {% endif %}
   </div>
