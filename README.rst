@@ -8,23 +8,23 @@
 .. image:: https://coveralls.io/repos/espona/ckanext-composite/badge.svg
   :target: https://coveralls.io/r/espona/ckanext-composite
 
-.. image:: https://pypip.in/download/ckanext-composite/badge.svg
+.. image:: https://img.shields.io/pypi/dm/ckanext-composite.svg
     :target: https://pypi.python.org/pypi//ckanext-composite/
     :alt: Downloads
 
-.. image:: https://pypip.in/version/ckanext-composite/badge.svg
+.. image:: https://img.shields.io/pypi/v/ckanext-composite.svg
     :target: https://pypi.python.org/pypi/ckanext-composite/
     :alt: Latest Version
 
-.. image:: https://pypip.in/py_versions/ckanext-composite/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/ckanext-composite.svg
     :target: https://pypi.python.org/pypi/ckanext-composite/
     :alt: Supported Python versions
 
-.. image:: https://pypip.in/status/ckanext-composite/badge.svg
+.. image:: https://img.shields.io/pypi/status/ckanext-composite.svg
     :target: https://pypi.python.org/pypi/ckanext-composite/
     :alt: Development Status
 
-.. image:: https://pypip.in/license/ckanext-composite/badge.svg
+.. image:: https://img.shields.io/pypi/l/ckanext-composite.svg
     :target: https://pypi.python.org/pypi/ckanext-composite/
     :alt: License
 
