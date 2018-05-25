@@ -6,7 +6,15 @@
    {% for key in name_list%}
       {% if  composite_dict[key]|length >0 %}
          {% if choices_dict[key]|length > 0  %}
-             {% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %}
+			{% if h.composite_is_list(composite_dict[key])  %}
+				{%- set labels = [] -%}
+				{% for item in composite_dict[key] %}
+					{%- do labels.append(h.scheming_choices_label(choices_dict[key], item)) -%}
+				{% endfor %}
+				{% set value = h.composite_join_list(labels) %}                 	
+			{% else %}                 
+				{% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %} 
+			{% endif %}
          {% else %}
              {% set value = composite_dict[key] %}
          {% endif %}

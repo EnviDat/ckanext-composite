@@ -14,27 +14,11 @@
       {%- snippet 'scheming/form_snippets/composite_tag_string_autocomplete.html', subfield=subfield, name=name, value=value, errors = errors -%}
    {% else %}
    {% if subfield.get('choices', false) %}
-      {%- set options=[] -%}
-      {%- if not h.scheming_field_required(subfield) or subfield.get('form_include_blank_choice', true) -%}
-         {%- do options.append({'value': '', 'text': ''}) -%}
-      {%- endif -%}
-      {%- for c in subfield.choices -%}
-         {%- do options.append({'value': c.value, 'text': h.scheming_language_text(c.label) }) -%}
-      {%- endfor -%}
-      {% call form.select(
-         name,
-         id=name,
-         label=h.scheming_language_text(subfield.label),
-         options=options,
-         selected=value,
-         error=errors[name],
-         classes=['mediunput'],
-         attrs=subfield.form_attrs if 'form_attrs' in subfield else {},
-         is_required=h.scheming_field_required(subfield)
-        )
-      %}
-     {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
-     {% endcall %}
+          {% if subfield.get('preset', '') == "multiple_checkbox"%}
+              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_multiple_checkbox.html', subfield=subfield, subfield_index=0, name=name, value=value, errors=errors -%}
+          {% else %}
+              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_select.html', subfield=subfield, subfield_index=0, name=name, value=value, errors=errors -%}
+          {% endif %}
    {% else %}
      {% set type = "text" %}
      {% set classes = ['control-medium']%}

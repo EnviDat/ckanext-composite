@@ -22,6 +22,23 @@ def _json2list_or_empty(value, field_name = ""):
         json_list = []
     return (json_list)
 
+def composite_is_list(value):
+    '''
+    Template helper funciton.
+    Returns true if the value is a list.
+    '''
+    return isinstance(value, list)
+
+def composite_join_list(value, sep=', '):
+    '''
+    Template helper funciton.
+    Returns the list joined by separator.
+    '''
+    if value:
+        if composite_is_list(value):
+            return (sep.join(value))
+    return str(value)
+
 def composite_get_as_dict(value):
     '''
     Template helper funciton.

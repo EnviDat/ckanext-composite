@@ -9,13 +9,21 @@
        {% for key in name_list %}
           {% if composite_dict[key]|length > 0 %}
              {% if choices_dict[key]|length > 0  %}
-                {% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %} 
+                {% if h.composite_is_list(composite_dict[key])  %}
+                    {%- set labels = [] -%}
+                    {% for item in composite_dict[key] %}
+      					{%- do labels.append(h.scheming_choices_label(choices_dict[key], item)) -%}
+                 	{% endfor %}
+                 	{% set value = h.composite_join_list(labels) %}                 	
+             	{% else %}                 
+                 	{% set value = h.scheming_choices_label(choices_dict[key], composite_dict[key]) %} 
+             	{% endif %}
              {% else %}
                 {% set value = composite_dict[key] %} 
              {% endif %}
              {% if first_key_written %}&nbsp{% endif %}<b>{{ label_dict[key] }}:</b>
              {% set first_key_written = true %}
-             {% if h.composite_is_mail(value) %}
+             {% if h.composite_is_mail(value|string) %}
                {{ value.split('@')[0] }}<span style="display:none">foo</span>(at){{ value.split('@')[1] }}
              {% else %}
                {{ value }}
