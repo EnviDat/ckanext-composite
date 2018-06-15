@@ -47,7 +47,7 @@
                  value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
                  {{ form.attributes(attrs) }} class="medinput"/>
             {% if subfield_index>1 %}
-               {%- snippet 'scheming/form_snippets/help_text.html', field=subfield -%}
+               {%- snippet 'scheming/form_snippets/subfield_snippets/composite_help_text.html', field=subfield -%}
             {% endif %}
         {% endcall %}
       {% endif %}

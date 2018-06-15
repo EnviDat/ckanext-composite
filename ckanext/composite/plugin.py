@@ -30,4 +30,5 @@ class CompositePlugin(plugins.SingletonPlugin):
                  'composite_repeating_get_value_dict_list': helpers.composite_repeating_get_value_dict_list,
                  'composite_is_mail': helpers.composite_is_mail,
                  'composite_is_list': helpers.composite_is_list,
-                 'composite_join_list': helpers.composite_join_list }
+                 'composite_join_list': helpers.composite_join_list,
+                 'composite_get_markup': helpers.composite_get_markup }

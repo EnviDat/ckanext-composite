@@ -205,3 +205,29 @@ def composite_is_mail(value):
     if re.match(EMAIL_REGEX, value):
         return True
     return False
+
+def composite_get_markup(text):
+    
+    markup_text = []
+
+    for token in text.split(' '):
+        if token.find('@')>=0:
+            markup_text += ['<b><a href="mailto:' + token + '" target="_top">' + token + '</a></b>']
+        elif token.find('http://')>=0 or token.find('https://')>=0:
+            # format [tag](link)
+            if token.find('[')==0:
+                start_tag = token.find('[') + 1
+                end_tag = token.find(']', start_tag)
+                tag = token[start_tag:end_tag]
+                link = token[end_tag+1:]
+                markup_text += ['<b><a href="' + link + '">' + tag + '</a></b>']
+            else:
+                # plain format
+				start = token.find('//') + len('//')
+				end = token.find('/', start)
+				tag = token[start:end]
+				markup_text += ['<b><a href="' + token + '">' + tag + '</a></b>']
+        else:
+            markup_text += [token]
+    return ' '.join(markup_text)
+
