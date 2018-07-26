@@ -83,8 +83,10 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
       }
 
       var input = field.find(':input');
-      input.val('').attr('id', increment).attr('name', increment);
-      
+      input.attr('id', increment).attr('name', increment);
+      // remove value except for checkboxes
+      input.each(function(){ if (! ($(this).hasClass("composite-multiple-checkbox"))) {$(this).val('')}});
+
       // unselect checkboxes
       input.filter('.composite-multiple-checkbox').attr("checked", false);
       
