@@ -35,14 +35,15 @@ fieldset.checkboxes label input {
 
     <fieldset class="checkboxes">
         {%- for option in options -%}
-            <label for="{{ name }}-{{ option.value }}">
+            <label for="{{ name }}-{{ option.value }}" class="composite-multiple-checkbox-label">
                 <input id="{{ name }}-{{ option.value }}"
                     type="checkbox"
+                    class="composite-multiple-checkbox" 
                     name="{{ name }}"
                     value="{{ option.value }}"
                     {{ "checked " if option.value in value }} 
                     />
-                {{ option.text }} 
+                {{ option.text }}
             </label>
         {%- endfor -%}
     </fieldset>

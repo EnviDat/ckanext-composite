@@ -40,7 +40,7 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
 
         var checkbox = $('<label class="checkbox btn btn-success fa fa-plus composite-btn"><input type="checkbox" id="add-field" style="padding:5px"/></label>');
         checkbox.on('change', ':checkbox', this._onChange);
-	checkbox.children(':checkbox').hide();
+	    checkbox.children(':checkbox').hide();
         $(firstFieldContainer).append(checkbox);
       }
     },
@@ -84,9 +84,13 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
 
       var input = field.find(':input');
       input.val('').attr('id', increment).attr('name', increment);
-
+      
+      // unselect checkboxes
+      input.filter('.composite-multiple-checkbox').attr("checked", false);
+      
       var label = field.find('label');
-      label.each(function(){ if (! $(this).hasClass("fa-minus")) {$(this).text(increment).attr('for', increment)}});
+      label.each(function(){ if (! ($(this).hasClass("fa-minus"))) {$(this).attr('for', increment)}});
+      label.each(function(){ if ($(this).hasClass("control-label")) {$(this).text(increment)}});
 
       field.find('.fa-plus').remove();
       field.find('button.outsidebutton').remove();
