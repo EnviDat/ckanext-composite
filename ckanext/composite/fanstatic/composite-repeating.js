@@ -38,7 +38,7 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
         // Create 'plus field' checkbox and add to first input container.
         var firstFieldContainer = this.el.find(this.options.fieldSelector + ':first .controls:first');
 
-        var checkbox = $('<label class="checkbox btn btn-success fa fa-plus composite-btn"><input type="checkbox" id="add-field" style="padding:5px"/></label>');
+        var checkbox = $('<label class="checkbox btn btn-success fa fa-plus composite-btn" style="margin-top:3px;" ><input type="checkbox" id="add-field" style="padding:5px;"/></label>');
         checkbox.on('change', ':checkbox', this._onChange);
 	    checkbox.children(':checkbox').hide();
         $(firstFieldContainer).append(checkbox);

@@ -8,14 +8,21 @@
 {%- for c in subfield.choices -%}
  {%- do options.append({'value': c.value, 'text': h.scheming_language_text(c.label) }) -%}
 {%- endfor -%}
+
+  {% if subfield.help_text and subfield_index>1 %}
+	{% set composite_classes = ["mediunput" , "composite-select-with-help"] %}
+  {% else %}
+	{% set composite_classes = ["mediunput",  "composite-select"] %}
+  {% endif %}
+
 {% call form.select(
  name,
  id=name,
- label=h.scheming_language_text(subfield.label) + ' ' + index|string,
+ label=h.scheming_language_text(subfield.label) + (' ' + index|string if index else ''),
  options=options,
  selected=value,
  error=errors[name],
- classes=['mediunput'],
+ classes=composite_classes,
  attrs=subfield.form_attrs if 'form_attrs' in subfield else {},
  is_required=h.scheming_field_required(subfield)
 )

@@ -21,7 +21,7 @@
           {% endif %}
    {% else %}
      {% set type = "text" %}
-     {% set classes = ['control-medium']%}
+     {% set classes = ['control-full']%}
      {% set extra_html="" %}
      {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
      {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
@@ -31,6 +31,14 @@
         {% set type = "date" %}
         {% set classes = []%}
      {% endif %}
+
+        {% if subfield.help_text %}
+           {% set composite_classes = "form-control composite-subfield-with-help" %}
+        {% else %}
+           {% set composite_classes = "form-control composite-subfield" %}
+        {% endif %}
+
+
      {%- call form.input_block(
        for='field-' + name,
        label=h.scheming_language_text(subfield.label),
@@ -42,7 +50,7 @@
        ) -%}
        <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
           value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
-          {{ form.attributes(attrs) }} class="medinput"/>
+          {{ form.attributes(attrs) }} class="{{ composite_classes }}"/>
 
      {%- snippet 'scheming/form_snippets/subfield_snippets/composite_help_text.html', field=subfield -%}
      {% endcall %}
