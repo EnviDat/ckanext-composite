@@ -94,15 +94,15 @@ fieldset.composite-multiple-checkboxes-with-help{
     padding-top:5px;
 }
 
-fieldset.composite-multiple-checkboxes label {
+label.composite-multiple-checkbox-label {
     font-weight: normal;
     display: inline-block;
     padding-right:10px;
-
 }
-fieldset.composite-multiple-checkboxes label:after {
+label.composite-multiple-checkbox-label::after {
     content: none;
 }
+
 fieldset.composite-multiple-checkboxes label input {
     width: auto;
     top: 0;
