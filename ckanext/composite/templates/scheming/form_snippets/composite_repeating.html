@@ -14,7 +14,8 @@
     {% for subfield in field.subfields %}
       {% set subfield_index = loop.index %}
       {% set name=field.field_name + '-' + index|string + '-' + subfield.field_name %}
-      {% set value=field_dict.get(subfield.field_name, '') %}
+      {% set default_value = subfield.get("default_value", "") %}
+      {% set value=field_dict.get(subfield.field_name, default_value) %}
 
       {% if subfield.help_text %}
         {% set composite_classes = "form-control composite-subfield-with-help" if subfield_index>1 else "medinput composite-subfield composite-first-subfield" %}
@@ -37,7 +38,7 @@
         {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
         {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
         {% if subfield.get("preset", "") == "date" %}
-           {% set value=field_dict.get(subfield.field_name, '').split()[0] %}
+           {% set value=field_dict.get(subfield.field_name, default_value).split()[0] %}
            {% set type = "date" %}
            {% set classes = []%}
         {% endif %}

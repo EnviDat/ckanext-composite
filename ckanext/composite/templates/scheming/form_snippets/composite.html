@@ -6,9 +6,10 @@
 
 {% for subfield in field.subfields %}
    {% set name=field.field_name + '-' + subfield.field_name %}
-   {% set value = '' %}
+   {% set default_value = subfield.get("default_value", "") %}
+   {% set value = default_value %}
    {% if field_dict is mapping %}
-      {% set value=field_dict.get(subfield.field_name, '') %}
+      {% set value=field_dict.get(subfield.field_name, default_value) %}
    {% endif %}
    {% if subfield.get('preset', '') == 'tag_string_autocomplete' %}
       {%- snippet 'scheming/form_snippets/composite_tag_string_autocomplete.html', subfield=subfield, name=name, value=value, errors = errors -%}
@@ -37,7 +38,6 @@
         {% else %}
            {% set composite_classes = "form-control composite-subfield" %}
         {% endif %}
-
 
      {%- call form.input_block(
        for='field-' + name,
