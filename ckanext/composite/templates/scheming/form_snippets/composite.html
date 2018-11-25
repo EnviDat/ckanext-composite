@@ -6,7 +6,7 @@
 
 {% for subfield in field.subfields %}
    {% set name=field.field_name + '-' + subfield.field_name %}
-   {% set default_value = subfield.get("default_value", "") %}
+   {% set default_value = h.composite_get_default_value(subfield.get("default_value", "")) %}
    {% set value = default_value %}
    {% if field_dict is mapping %}
       {% set value=field_dict.get(subfield.field_name, default_value) %}

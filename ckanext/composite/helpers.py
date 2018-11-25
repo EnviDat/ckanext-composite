@@ -1,5 +1,6 @@
 import json
 import re
+import datetime
 
 import logging
 
@@ -31,7 +32,7 @@ def composite_is_list(value):
 
 def composite_join_list(value, sep=', '):
     '''
-    Template helper funciton.
+    Template helper function.
     Returns the list joined by separator.
     '''
     if value:
@@ -230,4 +231,11 @@ def composite_get_markup(text):
         else:
             markup_text += [token]
     return ' '.join(markup_text)
+
+
+def composite_get_default_value(text):
+    if text == "composite_current_year":
+        now = datetime.datetime.now()
+        return str(now.year)
+    return text
 
