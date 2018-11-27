@@ -1,6 +1,6 @@
 {% import 'macros/form.html' as form %}
 
-{%- set subfield_label=h.scheming_language_text(subfield.label) + ' ' + index|string -%}
+{%- set subfield_label=h.scheming_language_text(subfield.label) + subfields_repeating_label + ' ' + index|string -%}
 
 {%- call form.input_block(
     label=subfield_label,

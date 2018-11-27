@@ -12,7 +12,7 @@
      {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
 
 
-     {{ form.input(name, label=h.scheming_language_text(subfield.label), id=(id or name), 
+     {{ form.input(name, label=h.scheming_language_text(subfield.label)+subfields_repeating_label, id=(id or name), 
                    placeholder=placeholder, value=(value | empty_and_escape), error=errors[name], 
                    classes=['control-full'], is_required=h.scheming_field_required(subfield), attrs=autocomplete_attrs) }}
 

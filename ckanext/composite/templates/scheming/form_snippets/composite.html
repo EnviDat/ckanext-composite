@@ -4,34 +4,37 @@
 
 {%- snippet 'scheming/form_snippets/composite_header.html', field=field, inline=field.help_inline -%}
 
+{% set subfields_repeating_label = field.get("subfields_label", "") %}
+
 {% for subfield in field.subfields %}
-   {% set name=field.field_name + '-' + subfield.field_name %}
-   {% set default_value = h.composite_get_default_value(subfield.get("default_value", "")) %}
-   {% set value = default_value %}
-   {% if field_dict is mapping %}
-      {% set value=field_dict.get(subfield.field_name, default_value) %}
-   {% endif %}
-   {% if subfield.get('preset', '') == 'tag_string_autocomplete' %}
-      {%- snippet 'scheming/form_snippets/composite_tag_string_autocomplete.html', subfield=subfield, name=name, value=value, errors = errors -%}
-   {% else %}
-   {% if subfield.get('choices', false) %}
-          {% if subfield.get('preset', '') == "multiple_checkbox"%}
-              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_multiple_checkbox.html', subfield=subfield, subfield_index=0, name=name, value=value, errors=errors -%}
-          {% else %}
-              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_select.html', subfield=subfield, subfield_index=0, name=name, value=value, errors=errors -%}
-          {% endif %}
-   {% else %}
-     {% set type = "text" %}
-     {% set classes = ['control-full']%}
-     {% set extra_html="" %}
-     {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
-     {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
-     {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
-     {% if subfield.get("preset", "") == "date" %}
-        {% set value= field_dict.get(subfield.field_name, '').split()[0] if field_dict is mapping else '' %}
-        {% set type = "date" %}
-        {% set classes = []%}
+   {% set subfield_form_snippet = subfield.get("form_snippet", "default") %}
+   {% if subfield_form_snippet %}   {% set name=field.field_name + '-' + subfield.field_name %}
+     {% set default_value = h.composite_get_default_value(subfield.get("default_value", "")) %}
+     {% set value = default_value %}
+     {% if field_dict is mapping %}
+        {% set value=field_dict.get(subfield.field_name, default_value) %}
      {% endif %}
+     {% if subfield.get('preset', '') == 'tag_string_autocomplete' %}
+       {%- snippet 'scheming/form_snippets/composite_tag_string_autocomplete.html', subfield=subfield, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors = errors -%}
+     {% else %}
+       {% if subfield.get('choices', false) %}
+          {% if subfield.get('preset', '') == "multiple_checkbox"%}
+              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_multiple_checkbox.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+          {% else %}
+              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_select.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+          {% endif %}
+      {% else %}
+       {% set type = "text" %}
+       {% set classes = ['control-full']%}
+       {% set extra_html="" %}
+       {% set modal_text=subfield.modal_text if 'modal_text' in subfield else none %}
+       {% set attrs=subfield.form_attrs if 'form_attrs' in subfield else {} %}
+       {% set placeholder=subfield.form_placeholder if 'form_placeholder' in subfield else '' %}
+       {% if subfield.get("preset", "") == "date" %}
+         {% set value= field_dict.get(subfield.field_name, '').split()[0] if field_dict is mapping else '' %}
+         {% set type = "date" %}
+         {% set classes = []%}
+       {% endif %}
 
         {% if subfield.help_text %}
            {% set composite_classes = "form-control composite-subfield-with-help" %}
@@ -39,22 +42,23 @@
            {% set composite_classes = "form-control composite-subfield" %}
         {% endif %}
 
-     {%- call form.input_block(
-       for='field-' + name,
-       label=h.scheming_language_text(subfield.label),
-       error=errors[name],
-       classes=classes,
-       control_classes=[],
-       extra_html="",
-       is_required=h.scheming_field_required(subfield) 
-       ) -%}
-       <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
-          value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
-          {{ form.attributes(attrs) }} class="{{ composite_classes }}"/>
+        {%- call form.input_block(
+           for='field-' + name,
+           label=h.scheming_language_text(subfield.label) + subfields_repeating_label,
+           error=errors[name],
+           classes=classes,
+           control_classes=[],
+           extra_html="",
+           is_required=h.scheming_field_required(subfield) 
+           ) -%}
+           <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}"
+            value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}"
+            {{ form.attributes(attrs) }} class="{{ composite_classes }}"/>
 
-     {%- snippet 'scheming/form_snippets/subfield_snippets/composite_help_text.html', field=subfield -%}
-     {% endcall %}
-   {% endif %}
+           {%- snippet 'scheming/form_snippets/subfield_snippets/composite_help_text.html', field=subfield -%}
+         {% endcall %}
+       {% endif %}
+     {% endif %}
    {% endif %}
 {% endfor %}
 <hr>
