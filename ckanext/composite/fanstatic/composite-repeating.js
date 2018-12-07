@@ -92,6 +92,10 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
       
       var label = field.find('label');
       label.each(function(){ if (! ($(this).hasClass("fa-minus"))) {$(this).attr('for', increment)}});
+      
+      label.each(function(){ if  ($(this).hasClass("fa-minus")) {$(this).attr('id', increment)}});
+      label.each(function(){ if  ($(this).hasClass("fa-minus")) {$(this).attr('name', increment)}});
+      
       label.each(function(){ if ($(this).hasClass("control-label")) {$(this).text(increment)}});
 
       field.find('.fa-plus').remove();

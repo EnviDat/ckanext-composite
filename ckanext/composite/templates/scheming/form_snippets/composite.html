@@ -4,11 +4,14 @@
 
 {%- snippet 'scheming/form_snippets/composite_header.html', field=field, inline=field.help_inline -%}
 
+<div id="composite-div-{{ field.field_name }}">
+
 {% set subfields_repeating_label = field.get("subfields_label", "") %}
 
 {% for subfield in field.subfields %}
    {% set subfield_form_snippet = subfield.get("form_snippet", "default") %}
-   {% if subfield_form_snippet %}   {% set name=field.field_name + '-' + subfield.field_name %}
+   {% if subfield_form_snippet == "default" %}
+     {% set name=field.field_name + '-' + subfield.field_name %}
      {% set default_value = h.composite_get_default_value(subfield.get("default_value", "")) %}
      {% set value = default_value %}
      {% if field_dict is mapping %}
@@ -59,8 +62,11 @@
          {% endcall %}
        {% endif %}
      {% endif %}
+    {% else %}
+        {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield -%}
    {% endif %}
 {% endfor %}
+</div>
 <hr>
 
 
