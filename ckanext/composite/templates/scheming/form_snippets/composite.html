@@ -10,7 +10,7 @@
 
 {% for subfield in field.subfields %}
    {% set subfield_form_snippet = subfield.get("form_snippet", "default") %}
-   {% if subfield_form_snippet == "default" %}
+   {% if subfield_form_snippet == "default"  %}
      {% set name=field.field_name + '-' + subfield.field_name %}
      {% set default_value = h.composite_get_default_value(subfield.get("default_value", "")) %}
      {% set value = default_value %}
@@ -63,7 +63,9 @@
        {% endif %}
      {% endif %}
     {% else %}
+      {% if subfield_form_snippet != None %}
         {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield -%}
+      {% endif %}
    {% endif %}
 {% endfor %}
 </div>
