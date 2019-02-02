@@ -161,7 +161,7 @@ Development Installation
 To install ckanext-composite for development, activate your CKAN virtualenv and
 do::
 
-    git clone https://github.com/espona/ckanext-composite.git
+    git clone https://github.com/EnviDat/ckanext-composite.git
     cd ckanext-composite
     python setup.py develop
     pip install -r dev-requirements.txt
