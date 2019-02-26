@@ -86,14 +86,17 @@ def composite_repeating_group2json(field, schema):
             prefix = key[-1] + '-'
             extras = data.get(key[:-1] + ('__extras',), {})
 
+            extras_to_delete = []
             for name, text in extras.iteritems():
                 if not name.startswith(prefix):
                     continue
-                if not text:
-                    continue
+
+                #if not text:
+                #    continue
 
                 index = int(name.split('-', 2)[1])
                 subfield = name.split('-', 2)[2]
+                extras_to_delete += [name]
 
                 if not found.has_key(index):
                       found[index] = {}
@@ -117,6 +120,10 @@ def composite_repeating_group2json(field, schema):
                             composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
                 # dump the list to a string
                 data[key] = json.dumps(found_list, ensure_ascii=False)
+
+                # delete the extras to avoid duplicate fields
+                for extra in extras_to_delete:
+                    del extras[extra]
 
         # check if the field is required
         if sh.scheming_field_required(field):
