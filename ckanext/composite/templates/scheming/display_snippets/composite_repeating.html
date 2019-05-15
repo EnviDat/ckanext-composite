@@ -26,7 +26,10 @@
              {% if h.composite_is_mail(value|string) %}
                {{ value.split('@')[0] }}<span style="display:none">foo</span>(at){{ value.split('@')[1] }}
              {% else %}
-               {{ value }}
+               {{ value.replace('(&#8224;)', 'x') }}
+               {% if '(&#8224;)' in value %}
+                   (&#8224;)
+               {% endif %}
              {% endif %}
           {% endif %}
       {% endfor %}
