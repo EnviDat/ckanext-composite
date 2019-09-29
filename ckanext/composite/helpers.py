@@ -208,7 +208,7 @@ def composite_is_mail(value):
     return False
 
 def composite_get_markup(text):
-    
+
     markup_text = []
 
     for token in text.split(' '):
@@ -221,13 +221,13 @@ def composite_get_markup(text):
                 end_tag = token.find(']', start_tag)
                 tag = token[start_tag:end_tag]
                 link = token[end_tag+1:]
-                markup_text += ['<b><a href="' + link + '">' + tag + '</a></b>']
+                markup_text += ['<b><a href="' + link + '" target="_blank" >' + tag + '</a></b>']
             else:
                 # plain format
 				start = token.find('//') + len('//')
 				end = token.find('/', start)
 				tag = token[start:end]
-				markup_text += ['<b><a href="' + token + '">' + tag + '</a></b>']
+				markup_text += ['<b><a href="' + token + '" target="_blank">' + tag + '</a></b>']
         else:
             markup_text += [token]
     return ' '.join(markup_text)
