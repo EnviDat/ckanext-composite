@@ -23,6 +23,15 @@ def composite_not_empty_subfield(key, subfield_label, value, errors):
         errors[key].append(_('Missing value at required subfield ' + subfield_label))
         raise StopOnError
 
+def composite_all_empty(field, item):
+
+    all_empty = True
+    for schema_subfield in field['subfields']:
+            subfield_value = item.get(schema_subfield.get('field_name', ''), "")
+            if subfield_value and not subfield_value is missing:
+                all_empty = False
+    return all_empty
+
 @scheming_validator
 def composite_group2json(field, schema):
 
@@ -51,13 +60,19 @@ def composite_group2json(field, schema):
             if not found:
                 data[key] = ""
             else:
+                item_is_empty = composite_all_empty(field, found) 
+                item_is_empty_and_optional = item_is_empty and not sh.scheming_field_required(field)
+                logger.debug('composite_group2json: item_is_empty_and_optional ' + str(key) + ':' + str(item_is_empty_and_optional))
                 # Check if there is any mandatory subfield required
                 for schema_subfield in field['subfields']:
-                    if schema_subfield.get('required', False):
+                    if schema_subfield.get('required', False) and not item_is_empty_and_optional:
                         subfield_label = schema_subfield.get('label', schema_subfield.get('field_name', ''))
                         subfield_value = found.get(schema_subfield.get('field_name', ''), "")
                         composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
+                if item_is_empty:
+                    found = {}
                 data[key] = json.dumps(found, ensure_ascii=False)
+                logger.debug('composite_group2json: data[key] = ' + str(data[key]))
 
                 # delete the extras to avoid duplicate fields
                 for extra in extras_to_delete:
@@ -109,8 +124,10 @@ def composite_repeating_group2json(field, schema):
                 # check if there are required subfields missing for every item
                 for index in found:
                     item = found[index]
+                    item_is_empty_and_optional = composite_all_empty(field, item) and not sh.scheming_field_required(field)
+                    logger.debug('composite_repeating_group2json: item_is_empty_and_optional ' + str(key) + ':'  + str(index) + ':' + str(item_is_empty_and_optional))
                     for schema_subfield in field['subfields']:
-                        if schema_subfield.get('required', False):
+                        if schema_subfield.get('required', False) and not item_is_empty_and_optional:
                             if type(schema_subfield.get('label', '')) is dict:
                                 subfield_label = schema_subfield.get('field_name', '') + " " + str(index)
                             else:
@@ -118,8 +135,14 @@ def composite_repeating_group2json(field, schema):
 
                             subfield_value = item.get(schema_subfield.get('field_name', ''), "")
                             composite_not_empty_subfield(key, subfield_label, subfield_value, errors)
+                            
+                # remove empty elements from list
+                clean_list = []
+                for element in found_list:
+                    if not composite_all_empty(field, element):
+                        clean_list += [element]
                 # dump the list to a string
-                data[key] = json.dumps(found_list, ensure_ascii=False)
+                data[key] = json.dumps(clean_list, ensure_ascii=False)
 
                 # delete the extras to avoid duplicate fields
                 for extra in extras_to_delete:
