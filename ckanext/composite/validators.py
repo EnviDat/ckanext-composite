@@ -72,7 +72,7 @@ def composite_group2json(field, schema):
                 if item_is_empty:
                     found = {}
                 data[key] = json.dumps(found, ensure_ascii=False)
-                logger.debug('composite_group2json: data[key] = ' + str(data[key]))
+                logger.debug('composite_group2json: key = ' + str(key))
 
                 # delete the extras to avoid duplicate fields
                 for extra in extras_to_delete:
