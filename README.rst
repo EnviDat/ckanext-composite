@@ -43,7 +43,7 @@ Allows to store structured dataset metadata, single or multiple fields. Only one
 Requirements
 ------------
 
-Developed for CKAn version 2.5.2. Requires the extensions ckanext-scheming and ckanext-repeating (using version from repository eawag-rdm).
+Developed for CKAN version 2.5.2. Requires the extensions ckanext-scheming and ckanext-repeating (using version from repository eawag-rdm).
 
 ------------
 Installation
@@ -140,7 +140,7 @@ Add this to your schema.json file::
           {
             "field_name": "type",
             "label": "Type",
-            choices = [
+            choices: [
              {
                 "value": "collaborator",
                 "label": "Collaborator"
