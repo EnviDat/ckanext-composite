@@ -36,6 +36,7 @@ def composite_all_empty(field, item):
 def composite_group2json(field, schema):
 
     def validator(key, data, errors, context):
+
         value = ""
         for name,text in data.iteritems():
             if name == key:
@@ -62,7 +63,6 @@ def composite_group2json(field, schema):
             else:
                 item_is_empty = composite_all_empty(field, found) 
                 item_is_empty_and_optional = item_is_empty and not sh.scheming_field_required(field)
-                logger.debug('composite_group2json: item_is_empty_and_optional ' + str(key) + ':' + str(item_is_empty_and_optional))
                 # Check if there is any mandatory subfield required
                 for schema_subfield in field['subfields']:
                     if schema_subfield.get('required', False) and not item_is_empty_and_optional:
@@ -72,7 +72,6 @@ def composite_group2json(field, schema):
                 if item_is_empty:
                     found = {}
                 data[key] = json.dumps(found, ensure_ascii=False)
-                logger.debug('composite_group2json: key = ' + str(key))
 
                 # delete the extras to avoid duplicate fields
                 for extra in extras_to_delete:
@@ -87,6 +86,8 @@ def composite_group2json(field, schema):
 def composite_repeating_group2json(field, schema):
 
     def validator(key, data, errors, context):
+
+        logger.debug("***GROUP TO JSON** {0}".format(key))
 
         value = ""
 
@@ -121,6 +122,7 @@ def composite_repeating_group2json(field, schema):
             if not found_list:
                 data[key] = ""
             else:
+
                 # check if there are required subfields missing for every item
                 for index in found:
                     item = found[index]

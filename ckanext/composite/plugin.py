@@ -3,6 +3,7 @@ import ckan.plugins.toolkit as toolkit
 
 from ckanext.composite import validators, helpers
 
+
 class CompositePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IValidators)
@@ -16,9 +17,9 @@ class CompositePlugin(plugins.SingletonPlugin):
 
     # IValidators
     def get_validators(self):
-        return { "composite_group2json": validators.composite_group2json ,
-                 #"composite_group2json_output": validators.composite_group2json_output,
-                 "composite_repeating_group2json":validators.composite_repeating_group2json }
+        return {"composite_group2json": validators.composite_group2json ,
+                # "composite_group2json_output": validators.composite_group2json_output,
+                "composite_repeating_group2json": validators.composite_repeating_group2json }
 
     # ITemplateHelpers
     def get_helpers(self):

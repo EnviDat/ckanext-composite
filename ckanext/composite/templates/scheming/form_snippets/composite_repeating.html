@@ -14,8 +14,8 @@
     {% set subfield_index = 0 %}
     {% for subfield in field.subfields %}
       {% set subfield_form_snippet = subfield.get("form_snippet", "default") %}
-      {% if subfield_form_snippet %}
-        {% set subfield_index = loop.index %}
+      {% set subfield_index = loop.index %}
+      {% if subfield_form_snippet == "default"  %}
         {% set name=field.field_name + '-' + index|string + '-' + subfield.field_name %}
         {% set default_value = subfield.get("default_value", "") %}
         {% set value=field_dict.get(subfield.field_name, default_value) %}
@@ -71,6 +71,10 @@
                   {{ markup_text|safe }}
               </div>
           {% endif %}
+        {% endif %}
+      {% else %}
+        {% if subfield_form_snippet != None %}
+          {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield, subfield_index=index|string -%}
         {% endif %}
       {% endif %}
     {% endfor %}
