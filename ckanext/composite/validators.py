@@ -86,12 +86,9 @@ def composite_group2json(field, schema):
 def composite_repeating_group2json(field, schema):
 
     def validator(key, data, errors, context):
-
-        logger.debug("***GROUP TO JSON** {0}".format(key))
-
         value = ""
 
-        for name,text in data.iteritems():
+        for name, text in data.iteritems():
             if name == key:
                 if text:
                     value = text
@@ -127,7 +124,6 @@ def composite_repeating_group2json(field, schema):
                 for index in found:
                     item = found[index]
                     item_is_empty_and_optional = composite_all_empty(field, item) and not sh.scheming_field_required(field)
-                    logger.debug('composite_repeating_group2json: item_is_empty_and_optional ' + str(key) + ':'  + str(index) + ':' + str(item_is_empty_and_optional))
                     for schema_subfield in field['subfields']:
                         if schema_subfield.get('required', False) and not item_is_empty_and_optional:
                             if type(schema_subfield.get('label', '')) is dict:
