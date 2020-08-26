@@ -1,0 +1,14 @@
+composite-repeating_js:
+  filter: rjsmin
+  output: composite/%(version)s_composite-repeating.js
+  contents:
+    - js/composite-repeating.js
+  extra:
+    preload:
+      - base/main
+
+composite_css:
+  contents:
+    - css/composite.css
+  output: composite/%(version)s_composite.css
+  filters: cssrewrite

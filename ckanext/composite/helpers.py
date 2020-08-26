@@ -4,24 +4,26 @@ import datetime
 
 import logging
 
-
 logger = logging.getLogger(__name__)
 
-def _json2dict_or_empty(value, field_name = ""):
+
+def _json2dict_or_empty(value, field_name=""):
     try:
         json_dict = json.loads(value)
     except Exception as e:
-        logger.warn("Field " + field_name + "('" + str(value) + "') could not be parsed: " + str(e))
+        logger.warning("Field " + field_name + "('" + str(value) + "') could not be parsed: " + str(e))
         json_dict = {}
-    return (json_dict)
+    return json_dict
 
-def _json2list_or_empty(value, field_name = ""):
+
+def _json2list_or_empty(value, field_name=""):
     try:
         json_list = json.loads(value)
     except Exception as e:
-        logger.warn("Field " + field_name + "('" + str(value) + "') could not be parsed: " + str(e))
+        logger.warning("Field " + field_name + "('" + str(value) + "') could not be parsed: " + str(e))
         json_list = []
-    return (json_list)
+    return json_list
+
 
 def composite_is_list(value):
     '''
@@ -29,6 +31,7 @@ def composite_is_list(value):
     Returns true if the value is a list.
     '''
     return isinstance(value, list)
+
 
 def composite_join_list(value, sep=', '):
     '''
@@ -39,6 +42,7 @@ def composite_join_list(value, sep=', '):
         if composite_is_list(value):
             return (sep.join(value))
     return str(value)
+
 
 def composite_get_as_dict(value):
     '''
@@ -51,7 +55,8 @@ def composite_get_as_dict(value):
     if isinstance(value, dict):
         return value
     else:
-        return(_json2dict_or_empty(value))
+        return (_json2dict_or_empty(value))
+
 
 def composite_get_label_dict(field_list):
     '''
@@ -68,6 +73,7 @@ def composite_get_label_dict(field_list):
         label_dict[name] = field.get('label', name)
     return label_dict
 
+
 def composite_get_choices_dict(field_list):
     '''
     Converts a list of dictionaries containing the keys
@@ -82,6 +88,7 @@ def composite_get_choices_dict(field_list):
         choices_dict[name] = field.get('choices', [])
     return choices_dict
 
+
 def composite_get_name_list(field_list):
     '''
     Converts a list of dictionaries containing the key
@@ -95,6 +102,7 @@ def composite_get_name_list(field_list):
             name_list += [name]
     return name_list
 
+
 def composite_get_value_dict(field_name, data):
     '''
     Template helper function.
@@ -102,7 +110,7 @@ def composite_get_value_dict(field_name, data):
     field comes from the database) or construct from several subfields -
     entries in case data wasn't saved yet, i.e. a validation error occurred.
     '''
- 
+
     def build_value_dict():
         fields = [re.match(field_name + "-.+", key) for key in data.keys()]
         fields = sorted([r.string for r in fields if r])
@@ -110,7 +118,7 @@ def composite_get_value_dict(field_name, data):
 
         for field in fields:
             if data[field] is not None:
-                subfield = field.split("-",1)[1]
+                subfield = field.split("-", 1)[1]
                 value_dict[subfield] = data[field]
         return value_dict
 
@@ -119,18 +127,19 @@ def composite_get_value_dict(field_name, data):
     form_value = build_value_dict()
 
     if form_value:
-       value_dict = form_value
+        value_dict = form_value
     else:
-       db_value = data.get(field_name)
-       if db_value:
-           if isinstance(db_value, dict):
-               value_dict = db_value
-           else:
-               value_dict = _json2dict_or_empty(db_value)
+        db_value = data.get(field_name)
+        if db_value:
+            if isinstance(db_value, dict):
+                value_dict = db_value
+            else:
+                value_dict = _json2dict_or_empty(db_value)
 
     return value_dict
 
-def composite_repeating_get_value_dict_list(field_name, subfields, data, field_blanks = 1, include_empty = True):
+
+def composite_repeating_get_value_dict_list(field_name, subfields, data, field_blanks=1, include_empty=True):
     '''
     Template helper function.
     Get data from composite_text-field from either field_name (if the
@@ -160,8 +169,8 @@ def composite_repeating_get_value_dict_list(field_name, subfields, data, field_b
                 index = int(field.split('-', 2)[1])
                 subfield = field.split('-', 2)[2]
 
-                if not value_dict.has_key(index):
-                   value_dict[index] = {}
+                if index not in value_dict.keys():
+                    value_dict[index] = {}
                 value_dict[index][subfield] = data[field]
 
         value_dict_list = [element[1] for element in sorted(value_dict.items())]
@@ -173,33 +182,33 @@ def composite_repeating_get_value_dict_list(field_name, subfields, data, field_b
     form_value = build_value_dict_list()
 
     if form_value:
-       value_dict_list = form_value
+        value_dict_list = form_value
     else:
-       db_value = data.get(field_name)
-       if db_value:
-           if isinstance(db_value, list):
-               value_dict_list = db_value
-           else:
-               value_dict_list = _json2list_or_empty(db_value)
-           # Compatibility
-           if isinstance(value_dict_list, dict):
-               value_dict_list = [value_dict_list]
-
+        db_value = data.get(field_name)
+        if db_value:
+            if isinstance(db_value, list):
+                value_dict_list = db_value
+            else:
+                value_dict_list = _json2list_or_empty(db_value)
+            # Compatibility
+            if isinstance(value_dict_list, dict):
+                value_dict_list = [value_dict_list]
 
     # Build empty dictionary for initial form
     if not value_dict_list:
-       loop_lim = max (field_blanks+1, 2)
-       value_dict_list = [] 
-       for  x in range (1, loop_lim):
-           blank_dict = {}
-           for subfield in subfields:
-               blank_dict[subfield['field_name']] = ''
-           value_dict_list += [blank_dict]
+        loop_lim = max(field_blanks + 1, 2)
+        value_dict_list = []
+        for x in range(1, loop_lim):
+            blank_dict = {}
+            for subfield in subfields:
+                blank_dict[subfield['field_name']] = ''
+            value_dict_list += [blank_dict]
 
     if not include_empty:
         value_dict_list = remove_empty_dicts(value_dict_list)
 
     return value_dict_list
+
 
 def composite_is_mail(value):
     EMAIL_REGEX = r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+$"
@@ -207,27 +216,27 @@ def composite_is_mail(value):
         return True
     return False
 
-def composite_get_markup(text):
 
+def composite_get_markup(text):
     markup_text = []
 
     for token in text.split(' '):
-        if token.find('@')>=0:
+        if token.find('@') >= 0:
             markup_text += ['<b><a href="mailto:' + token + '" target="_top">' + token + '</a></b>']
-        elif token.find('http://')>=0 or token.find('https://')>=0:
+        elif token.find('http://') >= 0 or token.find('https://') >= 0:
             # format [tag](link)
-            if token.find('[')==0:
+            if token.find('[') == 0:
                 start_tag = token.find('[') + 1
                 end_tag = token.find(']', start_tag)
                 tag = token[start_tag:end_tag]
-                link = token[end_tag+1:]
+                link = token[end_tag + 1:]
                 markup_text += ['<b><a href="' + link + '" target="_blank" >' + tag + '</a></b>']
             else:
                 # plain format
-				start = token.find('//') + len('//')
-				end = token.find('/', start)
-				tag = token[start:end]
-				markup_text += ['<b><a href="' + token + '" target="_blank">' + tag + '</a></b>']
+                start = token.find('//') + len('//')
+                end = token.find('/', start)
+                tag = token[start:end]
+                markup_text += ['<b><a href="' + token + '" target="_blank">' + tag + '</a></b>']
         else:
             markup_text += [token]
     return ' '.join(markup_text)
@@ -238,4 +247,3 @@ def composite_get_default_value(text):
         now = datetime.datetime.now()
         return str(now.year)
     return text
-
