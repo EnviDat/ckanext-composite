@@ -1,9 +1,11 @@
 
 <div class="composite-header">
+  <label>
   {% if  h.scheming_field_required(field) %}
     <span class="control-required" title="This field is required">*</span>
   {% endif %}
-  <p class="composite-header">{{ field.label }} </p>
+  {{ field.label }}
+  </label>
   {% set help_text = h.scheming_language_text(field.help_text)%}
   <div class="info-block {{ ' info-inline' if inline }}{{ " " ~ classes | join(' ') }} composite-header-info">
   {% if help_text %}

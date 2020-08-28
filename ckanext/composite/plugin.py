@@ -1,6 +1,7 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-
+from ckan.lib.webassets_tools import add_public_path
+import os
 from ckanext.composite import validators, helpers
 
 
@@ -14,7 +15,13 @@ class CompositePlugin(plugins.SingletonPlugin):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
 
-        toolkit.add_resource('assets', 'composite')
+        toolkit.add_resource('public', 'composite')
+
+        asset_path = os.path.join(
+            os.path.dirname(__file__), 'public'
+        )
+        add_public_path(asset_path, '/')
+
 
     # IValidators
     def get_validators(self):
