@@ -74,7 +74,7 @@
         {% endif %}
       {% else %}
         {% if subfield_form_snippet != None %}
-          {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield, subfield_index=index|string -%}
+          {%- snippet 'scheming/form_snippets/' + subfield_form_snippet, field=subfield, subfield_index=index|string, parent=field.field_name -%}
         {% endif %}
       {% endif %}
     {% endfor %}

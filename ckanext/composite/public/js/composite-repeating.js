@@ -91,7 +91,7 @@ this.ckan.module('composite-repeating', function (jQuery, _) {
       input.filter('.composite-multiple-checkbox').attr("checked", false);
       
       var label = field.find('label');
-      label.each(function(){ if (! ($(this).hasClass("fa-minus"))) {$(this).attr('for', increment)}});
+      label.each(function(){ if ((! ($(this).hasClass("fa-minus")))&&($(this).hasClass("control-label"))) {$(this).attr('for', increment)}});
       
       label.each(function(){ if  ($(this).hasClass("fa-minus")) {$(this).attr('id', increment)}});
       label.each(function(){ if  ($(this).hasClass("fa-minus")) {$(this).attr('name', increment)}});
