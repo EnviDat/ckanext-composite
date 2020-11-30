@@ -43,7 +43,8 @@ Allows to store structured dataset metadata, single or multiple fields. Only one
 Requirements
 ------------
 
-Developed for CKAn version 2.5.2. Requires the extensions ckanext-scheming and ckanext-repeating (using version from repository eawag-rdm).
+Supports currently CKAN 2.9. There is a legacy branch for CKAN 2.8 (https://github.com/EnviDat/ckanext-composite/tree/ckan-2.8). 
+Requires the extensions ckanext-scheming and ckanext-repeating (using version from repository eawag-rdm).
 
 ------------
 Installation
