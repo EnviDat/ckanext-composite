@@ -22,7 +22,7 @@
      {% else %}
        {% if subfield.get('choices', false) %}
           {% if subfield.get('preset', '') == "multiple_checkbox"%}
-              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_multiple_checkbox.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
+              {%- snippet 'scheming/form_snippets/subfield_snippets/composite_multiple_checkbox.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% else %}
               {%- snippet 'scheming/form_snippets/subfield_snippets/composite_select.html', subfield=subfield, subfield_index=0, subfields_repeating_label=subfields_repeating_label, name=name, value=value, errors=errors -%}
           {% endif %}
